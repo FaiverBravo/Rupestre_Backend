@@ -11,5 +11,5 @@ app.use("/api/users", userRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log("servidor corriendo en PUERTO :", port);
+  console.log("server corriendo en PUERTO :", port);
 });
