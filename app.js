@@ -9,7 +9,7 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 //app.use("/api/admin", adminRouter);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log("servidor corriendo en PUERTO :", port);
 });
