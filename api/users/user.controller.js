@@ -7,7 +7,7 @@ const {
   getUsers,
   getUserPerfil,
   getUserByPerfil,
-   updateUser,
+  updateUser,
   deleteUser 
 } = require("./user.service");
 const { hashSync, genSaltSync, compareSync } = require("bcrypt");
@@ -23,7 +23,7 @@ module.exports = {
       }
       if (!results) {
         return res.json({
-          success: 0,
+          success: 101,
           data: "Invalid email"
         });
       }
@@ -31,17 +31,21 @@ module.exports = {
       if (result) {
       //  results.password = undefined;
         const jsontoken = sign({ result: results },
-          "qwe1234", {
+          process.env.JWT_KEY, {
           expiresIn: "1h"
         });
         return res.json({
-          success: 1,
+          success: 100,
+          id: results.loginUsuarioID,
+          loginUsuario: results.loginUsuarioNikName,
+          loginUsuarioName: results.loginUsuarioFullName,
+          loginUsuarioAvatar: results.loginUsuarioAvatar,
           message: "login successfully",
           token: jsontoken
         });
       } else {
         return res.json({
-          success: 0,
+          success: 102,
           data: "Invalid password"
         });
       }
@@ -50,22 +54,41 @@ module.exports = {
 
   createUser: (req, res) => {
     const body = req.body;
-    const salt = genSaltSync(10);
-    body.password = hashSync(body.password, salt);
-    body.tipoAnfitrionID = UserPerfil(body.tipoAnfitrionID);
-    create(body, (err, results) => {
+    getUserByUserEmail(body.email, (err, results) => {
       if (err) {
         console.log(err);
-        return res.status(500).json({
-          success: 0,
-          message: "Database connection errror"
+      }
+      if (!!results) {
+        return res.status(402).json({
+          success: 101,
+          data: "Invalid email"
         });
       }
-      return res.status(200).json({
-        success: 1,
-        data: results
+      const salt = genSaltSync(10);
+      body.password = hashSync(body.password, salt);
+      create(body, (err, results) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: 0,
+            message: "Database connection errror"
+          });
+        }
+        const jsontoken = sign({ result: results },
+          process.env.JWT_KEY, {
+          expiresIn: "1h"
+        });
+        return res.status(200).json({
+          success: 100,
+          id: results.insertId,
+          loginUsuario: body.email,
+          loginUsuarioName: body.email,
+          message: "login successfully",
+          token: jsontoken
+        });
       });
-    });
+      // fin getUserByUserEmail
+    }); 
   },
 
   getUserById: (req, res) => {
@@ -120,12 +143,12 @@ module.exports = {
       if (err) {
         console.log(err);
         return res.status(500).json({
-          success: 0,
+          success: 101,
           message: "Database connection errror"
         });
       }
       return res.status(200).json({
-        success: 1,
+        success: 100,
         data: results
       });
     });
@@ -204,3 +227,5 @@ module.exports = {
     });
   } */
 };
+
+

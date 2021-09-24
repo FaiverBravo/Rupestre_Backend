@@ -14,7 +14,7 @@ const {
 } = require("./user.controller");
 
 router.post("/login", login);
-router.post("/", createUser);
+router.post("/user", createUser);
 router.post("/anfitrion", createAnfitrion);
 router.post("/turista", createTurista);
 

@@ -1,8 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+var cors = require('cors')
 const app = express();
+
+app.use(cors())
+
 const userRouter = require("./api/users/user.router");
-const adminRouter = require("./api/administrador/admin.router");
+// const adminRouter = require("./api/administrador/admin.router");
 
 app.use(express.json());
 

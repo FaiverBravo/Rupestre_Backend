@@ -68,8 +68,7 @@ module.exports = {
 
   create: (data, callBack) => {
     pool.query(
-      `insert into loginusuario(perfilUsuarioID,loginUsuarioNikName,loginUsuarioPassword,loginUsuarioFullName,loginUsuarioEstado)
-                values(?,?,?,?,?,?)`,
+      `insert into loginusuario(perfilUsuarioID,loginUsuarioNikName,loginUsuarioPassword,loginUsuarioFullName,loginUsuarioEstado) values(?,?,?,?,?)`,
       [data.idperfil,data.email,data.password,data.nombres, data.estado],
       (error, results, fields) => {
         if (error) {
@@ -81,6 +80,20 @@ module.exports = {
   },
 
   Anfitrion: (data, callBack) => {
+    pool.query(
+      `insert into anfitrion(anfitrionID, anfitrionNombres, anfitrionEmail) values(?,?,?)`,
+        [data.loginUsuarioID, data.anfitrionNombres, data.anfitrionEmail],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+
+
+/*   Anfitrion: (data, callBack) => {
     pool.query(
       `insert into anfitrion(_loginUsuarioID,
                               anfitrionNombres,
@@ -100,23 +113,22 @@ module.exports = {
                               tipoAnfitrionID,
                               ciudadID)
                 values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-                 [data.loginusuario_loginUsuarioID,
-                  data.anfitrionNombres,
-                  data.anfitrionApellidos,
-                  data.anfitrionDescripcion,
-                  data.anfitrionEstado,
-                  data.afitrionFechaAlta,
-                  data.anfitrionFechaAprobacion,
-                  data.anfitrionTelefono,
-                  data.anfitrionWhatsApp,
-                  data.anfitrionEmail,
-                  data.anfitrionDireccion,
-                  data.anfitrionFacebook,
-                  data.anfitrionInstagram,
-                  data.website,
-                  data.coordenadas,
-                  data.tipoAnfitrionID,
-                  data.ciudadID],
+      [data.loginusuario_loginUsuarioID,
+      data.anfitrionNombres,
+      data.anfitrionDescripcion,
+      data.anfitrionEstado,
+      data.afitrionFechaAlta,
+      data.anfitrionFechaAprobacion,
+      data.anfitrionTelefono,
+      data.anfitrionWhatsApp,
+      data.anfitrionEmail,
+      data.anfitrionDireccion,
+      data.anfitrionFacebook,
+      data.anfitrionInstagram,
+      data.website,
+      data.coordenadas,
+      data.tipoAnfitrionID,
+      data.ciudadID],
       (error, results, fields) => {
         if (error) {
           callBack(error);
@@ -124,7 +136,7 @@ module.exports = {
         return callBack(null, results);
       }
     );
-  },
+  }, */
 
   Turista: (data, callBack) => {
     pool.query(
